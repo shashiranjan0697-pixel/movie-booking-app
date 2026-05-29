@@ -9,7 +9,7 @@ router.post("/movies/create", movieMiddleware, createMovie);
 
 router.delete("/movies/delete/:id", deleteMovie);
 
-router.get("/movies/get/:option", movieGet);
+router.get("/movies/get/:id", movieGet);
 
 router.put("/movies/update/:id", movieUpdate);
 

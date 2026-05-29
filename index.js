@@ -4,7 +4,8 @@ const dns = require("dns");
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 const dbConnect = require("./config/database");
 const { urlencoded } = require("body-parser");
-const movieRoute = require("./route/movie.route")
+const movieRoute = require("./route/movie.route");
+const theaterRoute = require("./route/theatre.route");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/mba/api/v1", movieRoute);
+app.use("/mba/api/v1", theaterRoute);
 
 const port = process.env.PORT || 3000;
 

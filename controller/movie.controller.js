@@ -1,4 +1,4 @@
-const movie = require("../model/movie.model");
+
 const Movie = require("../model/movie.model");
 const mongoose = require("mongoose");
 
@@ -62,17 +62,8 @@ exports.deleteMovie =  async (req, res) =>{
 // finding movies
 exports.movieGet= async (req, res) =>{
     try{
-        const option = req.params.option;
-        let filter ={};
 
-        if (mongoose.Types.ObjectId.isValid(option)) {
-            filter._id = option;
-        }else {
-            // treat as title search (case-insensitive)
-            filter.title = { $regex: option, $options: "i" };
-        }
-
-        const info = await Movie.findOne(filter);
+        const info = await Movie.findById(req.params.id);
 
         if(!info){
             errorRes.message = "Movie not found"; 
