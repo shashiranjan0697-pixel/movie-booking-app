@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require("bcrypt");
+
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -30,6 +32,19 @@ const userSchema = new mongoose.Schema({
     }
 
 }, {timestamps:true});
+
+// Encrypting plain password before saving
+userSchema.pre('save', async function () {
+    const hashedPass = await bcrypt.hash(this.password, 10);
+    this.password = hashedPass;
+});
+
+//  Vlidating pssword for user signin
+userSchema.methods.isValidPass = async function (plainPass) {
+    const currentUser = this;
+    const compare = await bcrypt.compare(plainPass, currentUser.password);
+    return compare;
+};
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
