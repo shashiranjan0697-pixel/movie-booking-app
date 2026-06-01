@@ -40,15 +40,23 @@ exports.signin = async (req, res) =>{
         
         const user = await getUserByEmail(req.body.email);
 
+        if (!user) {
+            errorRes.message = "User not found";
+            return res.status(404).json(errorRes);
+        }
+
         const compare = await user.isValidPass(req.body.password);
 
-        if(!compare){
-            successRes.message= "invalid Password"
+        if (!compare) {
+            errorRes.message = "Invalid Password";
             return res.status(401).json(errorRes);
         }
 
         const token =jwt.sign(
-            {id:user.id, email:user.email }, 
+        {
+            id: user.id,
+            email: user.email
+        }, 
             process.env.AUTH_KEY,
             {expiresIn:"5d"}
         );

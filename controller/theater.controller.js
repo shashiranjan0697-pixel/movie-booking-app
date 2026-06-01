@@ -35,6 +35,12 @@ exports.deleteTheater = async (req, res )=>{
     try{
         const theater = await Theater.findByIdAndDelete(req.params.id);
 
+        if(!theater){
+            errorRes.message =  "Theater is not found with requested ID";
+            errorRes.err= "Bad request";
+            return res.status(404).json(errorRes);
+        }
+
         successRes.data = theater;
         successRes.message= "Theater Deleated"
         return res.status(201).json(successRes);
@@ -48,24 +54,6 @@ exports.deleteTheater = async (req, res )=>{
     }
 }
 
-
-
-exports.deleteTheater = async (req, res )=>{
-    try{
-        const theater = await Theater.findByIdAndDelete(req.params.id);
-
-        successRes.data = theater;
-        successRes.message= "Theater Deleated"
-        return res.status(201).json(successRes);
-
-    }   catch(e) {
-
-        errorRes.message =  e.errors.title.message;
-        errorRes.err= e.errors.title.name;
-        return res.status(500).json(errorRes);
-        
-    }
-}
 
 
 

@@ -8,10 +8,11 @@ const {createTheater, deleteTheater, getTheater,
 
 const {validateTheater, validateMovieUpdateInTheater} = require("../middleware/theater.middleware")
 
+const {isAuthnticated} = require("../middleware/auth.middleware");
 
 router.post("/theaters/create", validateTheater, createTheater);
 
-router.delete("/theaters/delete/:id", deleteTheater);
+router.delete("/theaters/delete/:id",isAuthnticated, deleteTheater);
 
 router.get("/theaters/get/:id", getTheater);
 
