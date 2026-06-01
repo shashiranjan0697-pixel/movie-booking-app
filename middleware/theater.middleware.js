@@ -40,10 +40,6 @@ exports.validateTheater = async (req, res, next) =>{
 
 exports.validateMovieUpdateInTheater = async (req, res, next) => {
 
-    // if(!req.body.insert){
-    //     errorRes.err = "Insert parameters is not available."
-    //     return res.status(400).json(errorRes);
-    // }
      if (req.body.insert === undefined) {
         errorRes.err = "Insert parameter is not available.";
         return res.status(400).json(errorRes);
