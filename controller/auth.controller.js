@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 require ("dotenv").config();
+const bcrypt = require("bcrypt");
 
 const User = require('../model/user.model');
 const {registerUser, getUserByEmail} = require("../services/auth.service")
@@ -80,3 +81,44 @@ exports.signin = async (req, res) =>{
 
     }
 }
+
+
+
+exports.reset = async (req, res) =>{
+    try{
+
+        const user = await User.findById(req.user);
+
+        if(!user){
+            errorRes.message = "User is not found with given Email.";
+            return res.status(404).json(errorRes);
+        }
+
+        const isValid = await user.isValidPass(req.body.password);
+
+        if(!isValid){
+            errorRes.message = "Invalid old password.";
+            return res.status(403).json(errorRes);
+        }
+        
+        user.password = req.body.newPassword;
+
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            data:user,
+            message: "Password reset successfully"
+        });
+
+    }   catch(e){
+
+        errorRes.message = e.message;
+        errorRes.err = e.name;
+        return res.status(500).json(errorRes);
+
+    }
+}
+
+
+

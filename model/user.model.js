@@ -23,11 +23,13 @@ const userSchema = new mongoose.Schema({
     userRole:{
         type:String,
         required:true,
+        enum:["CUSTOMER", "ADMIN", "CLIENT"],
         default:"CUSTOMER"
     },
     userStatus:{
         type:String,
         required:true,
+        enum:["PENDING", "APPROVED"],
         default:"APPROVED"
     }
 

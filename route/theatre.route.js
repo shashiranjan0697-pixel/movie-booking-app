@@ -4,25 +4,36 @@ const router = express.Router();
 
 const {createTheater, deleteTheater, getTheater, 
     updateTheater, getAllTheater, addMovieInTheater,
-    getMovieStreamingInTheater, getMovieInATheater} = require("../controller/theater.controller");
+    getMovieStreamingInTheater, getMovieInATheater} 
+    = require("../controller/theater.controller");
 
-const {validateTheater, validateMovieUpdateInTheater} = require("../middleware/theater.middleware")
+const {validateTheater, validateMovieUpdateInTheater} 
+        = require("../middleware/theater.middleware")
 
-const {isAuthnticated} = require("../middleware/auth.middleware");
+const {isAuthnticated, isClientOrAdmin,
+    isClient, isAdmin} 
+    = require("../middleware/auth.middleware");
 
-router.post("/theaters/create", validateTheater, createTheater);
+router.post("/theaters/create",
+        isAuthnticated, isClientOrAdmin,
+        validateTheater, createTheater);
 
-router.delete("/theaters/delete/:id",isAuthnticated, deleteTheater);
+router.delete("/theaters/delete/:id",
+    isAuthnticated, isClientOrAdmin, deleteTheater);
 
 router.get("/theaters/get/:id", getTheater);
 
-router.put("/theaters/update/:id", updateTheater);
+router.put("/theaters/update/:id",
+    isAuthnticated, isClientOrAdmin, updateTheater);
 
-router.patch("/theaters/update/:id", updateTheater);
+router.patch("/theaters/update/:id",
+    isAuthnticated, isClientOrAdmin, updateTheater);
 
 router.get("/theaters/all", getAllTheater);
 
-router.patch("/theaters/update/:id/movies", validateMovieUpdateInTheater, addMovieInTheater);
+router.patch("/theaters/update/:id/movies",
+    isAuthnticated, isClientOrAdmin,
+    validateMovieUpdateInTheater, addMovieInTheater);
 
 router.get("/theaters/get/:id/movies", getMovieStreamingInTheater);
 

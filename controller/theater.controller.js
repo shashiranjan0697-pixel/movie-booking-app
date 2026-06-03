@@ -91,7 +91,7 @@ exports.updateTheater= async (req, res) =>{
             req.params.id,
             req.body,
             {
-                new: true,
+                returnDocument: true,
                 runValidators: true
             }
         );
@@ -162,6 +162,8 @@ exports.getAllTheater = async (req, res) =>{
         return res.status(201).json(successRes);
 
     }   catch(e){
+
+        
         errorRes.message =  e.errors.title.message;
         errorRes.err= e.errors.title.name;
         return res.status(500).json(errorRes);
