@@ -73,10 +73,6 @@ exports.isAuthnticated = async (req, res, next) =>{
 
         req.user = response.id; 
 
-        console.log(user.id);
-        console.log(user.email);
-        console.log(user.userRole);
-
         next();
 
     }   catch (e) {
@@ -86,5 +82,64 @@ exports.isAuthnticated = async (req, res, next) =>{
         return res.status(401).send(errorRes);
 
     }
+
+}
+
+exports.validateReset = async (req, res, next)=>{
+    if(!req.body.password){
+        errorRes.err = "Please enter the old password."
+        return res.status(400).json(errorRes);
+    }
+
+    if(!req.body.newPassword){
+        errorRes.err = "Please enter the new Password."
+        return res.status(400).json(errorRes);
+    }
+
+    if(req.body.newPassword == req.body.password){
+        errorRes.err = "New password must be different from the old password.";
+        return res.status(400).json(errorRes);
+    }
+
+    next();
+}
+
+
+
+exports.isAdmin = async (req, res, next)=>{
+    const user = await User.findById(req.user);
+
+    if(user.userRole != "ADMIN"){
+        errorRes.err = "Only admins are authorized to access this resource."
+        return res.status(403).json(errorRes);
+    }
+
+    next();
+
+}
+
+
+exports.isClient = async (req, res, next)=>{
+    const user = await User.findById(req.user);
+
+    if(user.userRole != "CLIENT"){
+        errorRes.err = "Only client are authorized to access this resource."
+        return res.status(403).json(errorRes);
+    }
+
+    next();
+
+}
+
+
+exports.isClientOrAdmin = async (req, res, next)=>{
+    const user = await User.findById(req.user);
+
+    if(user.userRole != "CLIENT" && user.userRole != "ADMIN"){
+        errorRes.err = "Only client or admin are authorized to access this resource."
+        return res.status(403).json(errorRes);
+    }
+
+    next();
 
 }

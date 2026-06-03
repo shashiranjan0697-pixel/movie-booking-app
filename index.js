@@ -8,6 +8,7 @@ const { urlencoded } = require("body-parser");
 const movieRoute = require("./route/movie.route");
 const theaterRoute = require("./route/theatre.route");
 const authRoute = require("./route/auth.route");
+const userRoute = require("./route/user.route");
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/mba/api/v1", movieRoute);
 app.use("/mba/api/v1", theaterRoute);
 app.use("/mba/api/v1", authRoute);
+app.use("/mba/api/v1", userRoute);
+
 
 const port = process.env.PORT || 3000;
 
