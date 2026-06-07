@@ -23,13 +23,19 @@ const userSchema = new mongoose.Schema({
     userRole:{
         type:String,
         required:true,
-        enum:["CUSTOMER", "ADMIN", "CLIENT"],
+        enum:{
+            values:["CUSTOMER", "ADMIN", "CLIENT"],
+            message:"Invalid user role"
+        },
         default:"CUSTOMER"
     },
     userStatus:{
         type:String,
         required:true,
-        enum:["PENDING", "APPROVED"],
+        enum:{   
+            values:["PENDING", "APPROVED"],
+            message:"Invalid user status"
+        },
         default:"APPROVED"
     }
 

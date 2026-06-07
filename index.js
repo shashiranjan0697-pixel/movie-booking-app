@@ -9,6 +9,8 @@ const movieRoute = require("./route/movie.route");
 const theaterRoute = require("./route/theatre.route");
 const authRoute = require("./route/auth.route");
 const userRoute = require("./route/user.route");
+const bookingRoute = require("./route/booking.route");
+const showRoute = require("./route/show.route");
 
 const app = express();
 
@@ -20,6 +22,8 @@ app.use("/mba/api/v1", movieRoute);
 app.use("/mba/api/v1", theaterRoute);
 app.use("/mba/api/v1", authRoute);
 app.use("/mba/api/v1", userRoute);
+app.use("/mba/api/v1", bookingRoute);
+app.use("/mba/api/v1", showRoute);
 
 
 const port = process.env.PORT || 3000;

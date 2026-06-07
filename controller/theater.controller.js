@@ -91,10 +91,16 @@ exports.updateTheater= async (req, res) =>{
             req.params.id,
             req.body,
             {
-                returnDocument: true,
+                returnDocument: 'after',
                 runValidators: true
             }
         );
+
+        if(!theater){
+            errorRes.message= "Theater not found with given id."
+            errorRes.err= "Please enter valid theater id."
+            return res.status(404).json(errorRes);
+        }
 
         successRes.data = theater;
         successRes.message= "Theater updated successfully."
