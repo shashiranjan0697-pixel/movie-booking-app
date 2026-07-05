@@ -22,7 +22,6 @@ const createBooking = async (req, res) =>{
                 }
             );  
     
-        
         successRes.data = response;
         successRes.message= "Booking created successfully."
         return res.status(201).json(successRes);
