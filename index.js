@@ -11,6 +11,7 @@ const authRoute = require("./route/auth.route");
 const userRoute = require("./route/user.route");
 const bookingRoute = require("./route/booking.route");
 const showRoute = require("./route/show.route");
+const paymentRoute = require("./route/payment.route");
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use("/mba/api/v1", authRoute);
 app.use("/mba/api/v1", userRoute);
 app.use("/mba/api/v1", bookingRoute);
 app.use("/mba/api/v1", showRoute);
+app.use("/mba/api/v1", paymentRoute);
 
 
 const port = process.env.PORT || 3000;
