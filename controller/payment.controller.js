@@ -1,5 +1,6 @@
 const Booking = require("../model/booking.model");
 const Payment = require("../model/payment.model");
+const User = require("../model/user.model");
 
 const errorRes = {
     success:false,
@@ -109,7 +110,44 @@ const getPayment = async (req, res) =>{
 
 
 
+const getAllPayment = async (req, res) => {
+    try {
+        console.log("Reached getAllPayment");
+        const user = await User.findById(req.user);
+
+        const filter = {};
+
+        if (user.userRole === "CUSTOMER") {
+            filter.userId = req.user;
+        }
+
+        const bookings = await Booking.find(filter, { _id: 1 });
+
+        const bookingIds = bookings.map((booking) => booking._id);
+
+        const payments = await Payment.find({
+            bookingId: { $in: bookingIds }
+        });
+
+        successRes.data = payments;
+        successRes.message = payments.length
+            ? "All Payments fetched successfully."
+            : "No payments found.";
+
+        return res.status(200).json(successRes);
+
+    } catch (e) {
+        errorRes.message = e.message;
+        errorRes.err = e.name;
+
+        return res.status(500).json(errorRes);
+    }
+};
+
+
+
 module.exports = {
     createPayment,
-    getPayment
+    getPayment,
+    getAllPayment
 }
