@@ -14,6 +14,11 @@ router.post("/payment/create",
 router.get("/payment/:paymentId",
         isAuthnticated,
         paymentController.getPayment
-);
+    );
+
+router.get("/payment",
+        isAuthnticated,
+        paymentController.getAllPayment
+    );
 
 module.exports = router;

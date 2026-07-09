@@ -3,7 +3,7 @@ require("dotenv").config();
 const dns = require("dns");
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 const dbConnect = require("./config/database");
-const { urlencoded } = require("body-parser");
+// const { urlencoded } = require("body-parser");
 
 const movieRoute = require("./route/movie.route");
 const theaterRoute = require("./route/theatre.route");
