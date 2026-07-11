@@ -1,6 +1,7 @@
 const Booking = require("../model/booking.model");
 const User = require("../model/user.model");
 const Show =require("../model/show.model");
+const paymentController = require("../controller/payment.controller");
 
 const errorRes = {
     success:false,
@@ -32,7 +33,8 @@ const createBooking = async (req, res) =>{
             return res.status(400).json(errorRes);
         }
 
-        req.body.totalCost = (show.price * req.body.noOfSeats);
+        const seats = Number(req.body.noOfSeats);
+        req.body.totalCost = show.price * seats;
         
         const response = await Booking.create(
                 {
@@ -43,7 +45,7 @@ const createBooking = async (req, res) =>{
 
         show.noOfSeats -= req.body.noOfSeats;
         await show.save()
-        
+
         successRes.data = response;
         successRes.message= "Booking created successfully."
         return res.status(201).json(successRes);
