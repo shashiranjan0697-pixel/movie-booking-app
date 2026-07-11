@@ -1,5 +1,7 @@
 const Booking = require("../model/booking.model");
 const User = require("../model/user.model");
+const Show =require("../model/show.model");
+const paymentController = require("../controller/payment.controller");
 
 const errorRes = {
     success:false,
@@ -15,13 +17,35 @@ const successRes = {
 
 const createBooking = async (req, res) =>{
     try{
+        const show = await Show.findOne({
+            theaterId:req.body.theaterId,
+            movieId:req.body.movieId,
+            timing:req.body.timing
+        });
+
+        if (!show) {
+            errorRes.message= "Show not found."
+            return res.status(404).json(errorRes);
+        }
+
+        if (show.noOfSeats < req.body.noOfSeats) {
+            errorRes.message= "Seats not available."
+            return res.status(400).json(errorRes);
+        }
+
+        const seats = Number(req.body.noOfSeats);
+        req.body.totalCost = show.price * seats;
+        
         const response = await Booking.create(
                 {
                     ...req.body,
                     userId:req.user
                 }
             );  
-    
+
+        show.noOfSeats -= req.body.noOfSeats;
+        await show.save()
+
         successRes.data = response;
         successRes.message= "Booking created successfully."
         return res.status(201).json(successRes);

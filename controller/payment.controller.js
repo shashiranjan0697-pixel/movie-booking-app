@@ -1,6 +1,10 @@
 const Booking = require("../model/booking.model");
 const Payment = require("../model/payment.model");
 const User = require("../model/user.model");
+const Movie = require("../model/movie.model");
+const axios = require("axios");
+const Theater = require("../model/theater.model");
+require("dotenv").config();
 
 const errorRes = {
     success:false,
@@ -61,6 +65,20 @@ const createPayment = async (req, res) =>{
         await booking.save();
         await payment.save();
 
+    const user = await User.findById(booking.userId);
+    const movie = await Movie.findById(booking.movieId);
+    const theater = await Theater.findById(booking.theaterId);
+
+    const response = {
+        from:"shashiranjan0697@gmail.com",
+        recipientEmail: [user.email],
+        subject:"Successfull movie booking",
+        content :`Hey ${user.name}, you have successfully booked ${booking.noOfSeats} seats of ${movie.title} in ${theater.name} theater for ${booking.timing} show.` 
+        }
+        axios.post(process.env.NOTI_HOS, response);
+
+
+        console.log("Response : ", response); 
         successRes.message = "Payment Created Successfully.";
         successRes.data = {
             Booking : booking,
