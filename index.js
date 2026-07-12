@@ -30,6 +30,12 @@ app.use("/mba/api/v1", paymentRoute);
 
 const port = process.env.PORT || 3000;
 
+app.get('/', (req, res) => {
+    res.send(`
+        <h1>This is Home Page of Movie Booking Application</h1>
+    `);
+});
+
 dbConnect();
 
 app.listen( port , (req, res) =>{
